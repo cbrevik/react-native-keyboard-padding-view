@@ -1,6 +1,6 @@
 {
     "name": "react-native-keyboard-padding-view",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -10,10 +10,11 @@
     },
     "repository": {
         "type": "git",
-        "url":
-            "git+https://github.com/cbrevik/react-native-keyboard-padding-view.git"
+        "url": "git+https://github.com/cbrevik/react-native-keyboard-padding-view.git"
     },
-    "keywords": ["react-native"],
+    "keywords": [
+        "react-native"
+    ],
     "author": "Christian Brevik",
     "license": "MIT",
     "devDependencies": {
