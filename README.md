@@ -3,4 +3,6 @@
 Yet another package trying to solve problems with Keyboards popping up in React Native.
 
 All I needed myself was a simple View adding padding when Keyboard pops up.
-Caveat though was that it also respects `windowSoftInputMode="adjustResize"` on Android.
+
+Set `isAutoResize={true}` for Android if the window resizes (e.g. `windowSoftInputMode="adjustResize"`)
+Tried to get this natively, but seems like this is sometimes set dynamically as well.

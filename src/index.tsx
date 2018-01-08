@@ -8,12 +8,6 @@ import {
     EmitterSubscription
 } from "react-native"
 
-let autoResize = false
-import Bridge from "./bridge"
-Bridge.autoResizeWindow().then(auto => {
-    autoResize = auto
-})
-
 export interface ScreenRect {
     screenX: number
     screenY: number
@@ -30,6 +24,7 @@ interface KeyboardChangeEvent {
 
 export interface Props extends ViewProperties {
     keyboardVerticalOffset?: number
+    isAutoResize?: boolean
 }
 
 export interface State {
@@ -53,15 +48,22 @@ export default class KeyboardPaddingView extends Component<Props, State> {
             return 0
         }
 
-        const keyboardY =
-            keyboardFrame.screenY - this.props.keyboardVerticalOffset
-
-        return Math.max(
-            frame.y +
-                (autoResize ? keyboardY : frame.height) -
-                keyboardFrame.screenY,
-            0
-        )
+        if (this.props.isAutoResize) {
+            return Math.max(
+                frame.y +
+                    (keyboardFrame.screenY -
+                        this.props.keyboardVerticalOffset) -
+                    keyboardFrame.screenY,
+                0
+            )
+        } else {
+            return Math.max(
+                frame.y +
+                    (frame.height + this.props.keyboardVerticalOffset) -
+                    keyboardFrame.screenY,
+                0
+            )
+        }
     }
 
     private onKeyboardChange = async (event: KeyboardChangeEvent) => {
