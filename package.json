@@ -1,21 +1,26 @@
 {
-  "name": "react-native-keyboard-padding-view",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "react-native"
-  ],
-  "author": "",
-  "license": "",
-  "devDependencies": {
-    "@types/react": "^16.0.34",
-    "@types/react-native": "^0.51.9",
-    "husky": "^0.14.3",
-    "prettier": "^1.9.2",
-    "typescript": "^2.6.2"
-  }
+    "name": "react-native-keyboard-padding-view",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "precommit": "yarn run tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url":
+            "git+https://github.com/cbrevik/react-native-keyboard-padding-view.git"
+    },
+    "keywords": ["react-native"],
+    "author": "Christian Brevik",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/react": "^16.0.34",
+        "@types/react-native": "^0.51.9",
+        "husky": "^0.14.3",
+        "prettier": "^1.9.2",
+        "typescript": "^2.6.2"
+    }
 }

@@ -8,7 +8,11 @@ import {
     EmitterSubscription
 } from "react-native"
 
+let autoResize = false
 import Bridge from "./bridge"
+Bridge.autoResizeWindow().then(auto => {
+    autoResize = auto
+})
 
 export interface ScreenRect {
     screenX: number
@@ -52,10 +56,15 @@ export default class KeyboardPaddingView extends Component<Props, State> {
         const keyboardY =
             keyboardFrame.screenY - this.props.keyboardVerticalOffset
 
-        return Math.max(frame.y + frame.height - keyboardFrame.screenY, 0)
+        return Math.max(
+            frame.y +
+                (autoResize ? keyboardY : frame.height) -
+                keyboardFrame.screenY,
+            0
+        )
     }
 
-    private onKeyboardChange = (event: KeyboardChangeEvent) => {
+    private onKeyboardChange = async (event: KeyboardChangeEvent) => {
         if (!event) {
             this.setState({ bottom: 0 })
             return
@@ -73,15 +82,12 @@ export default class KeyboardPaddingView extends Component<Props, State> {
             })
         }
 
-        console.log("keyboard", endCoordinates)
-
         this.setState({
             endCoordinates
         })
     }
 
     onLayout = (event: any) => {
-        console.log("onLayout ", event.nativeEvent.layout)
         this.setState({
             frame: event.nativeEvent.layout
         })
@@ -97,12 +103,7 @@ export default class KeyboardPaddingView extends Component<Props, State> {
             nextState.endCoordinates
         )
 
-        console.log("update", nextState)
-        console.log("heightUpdate", height)
-
-        nextState.bottom = nextState.endCoordinates
-            ? nextState.endCoordinates.height
-            : 0
+        nextState.bottom = height
     }
 
     componentWillMount() {
@@ -115,10 +116,7 @@ export default class KeyboardPaddingView extends Component<Props, State> {
             ]
         } else {
             this.subscriptions = [
-                Keyboard.addListener(
-                    "keyboardDidHide",
-                    this.onKeyboardChange.bind(this, { height: 0 })
-                ),
+                Keyboard.addListener("keyboardDidHide", this.onKeyboardChange),
                 Keyboard.addListener("keyboardDidShow", this.onKeyboardChange)
             ]
         }
