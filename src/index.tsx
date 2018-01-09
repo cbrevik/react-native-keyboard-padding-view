@@ -71,7 +71,6 @@ export default class KeyboardPaddingView extends Component<Props, State> {
     }
 
     private onKeyboardChange = async (event: KeyboardChangeEvent) => {
-        console.log("onKeyboardChange")
         if (!event) {
             this.setState({ bottom: 0 })
             return
@@ -94,13 +93,11 @@ export default class KeyboardPaddingView extends Component<Props, State> {
     }
 
     private keyboardAndroidHide = () => {
-        console.log("onHide")
         this.setState({bottom: 0})
     }
 
     onLayout = (event: any) => {
         this.frame = event.nativeEvent.layout
-        console.log("onLayout")
         this.updateLayout()
     }
 
@@ -110,7 +107,6 @@ export default class KeyboardPaddingView extends Component<Props, State> {
             this.endCoordinates
         )
 
-        console.log("update: ", height)
         this.setState({ bottom: height })
     }
 
