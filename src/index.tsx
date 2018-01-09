@@ -29,16 +29,20 @@ export interface Props extends ViewProperties {
 
 export interface State {
     bottom: number
-    endCoordinates?: ScreenRect
-    frame?: any
 }
 
 export default class KeyboardPaddingView extends Component<Props, State> {
+    static defaultProps = {
+        isAutoResize: Platform.OS === "android"
+    }
+
     state: State = {
         bottom: 0
     }
 
     subscriptions: EmitterSubscription[] = []
+    endCoordinates?: ScreenRect
+    frame?: any
 
     private relativeKeyboardHeight(
         frame: any,
@@ -67,6 +71,7 @@ export default class KeyboardPaddingView extends Component<Props, State> {
     }
 
     private onKeyboardChange = async (event: KeyboardChangeEvent) => {
+        console.log("onKeyboardChange")
         if (!event) {
             this.setState({ bottom: 0 })
             return
@@ -84,28 +89,29 @@ export default class KeyboardPaddingView extends Component<Props, State> {
             })
         }
 
-        this.setState({
-            endCoordinates
-        })
+        this.endCoordinates = endCoordinates
+        this.updateLayout()
+    }
+
+    private keyboardAndroidHide = () => {
+        console.log("onHide")
+        this.setState({bottom: 0})
     }
 
     onLayout = (event: any) => {
-        this.setState({
-            frame: event.nativeEvent.layout
-        })
+        this.frame = event.nativeEvent.layout
+        console.log("onLayout")
+        this.updateLayout()
     }
 
-    componentWillUpdate(
-        nextProps: Props,
-        nextState: State,
-        nextContext?: Object
-    ): void {
+    updateLayout = (): void => {
         const height = this.relativeKeyboardHeight(
-            nextState.frame,
-            nextState.endCoordinates
+            this.frame,
+            this.endCoordinates
         )
 
-        nextState.bottom = height
+        console.log("update: ", height)
+        this.setState({ bottom: height })
     }
 
     componentWillMount() {
@@ -118,7 +124,7 @@ export default class KeyboardPaddingView extends Component<Props, State> {
             ]
         } else {
             this.subscriptions = [
-                Keyboard.addListener("keyboardDidHide", this.onKeyboardChange),
+                Keyboard.addListener("keyboardDidHide", this.keyboardAndroidHide),
                 Keyboard.addListener("keyboardDidShow", this.onKeyboardChange)
             ]
         }
